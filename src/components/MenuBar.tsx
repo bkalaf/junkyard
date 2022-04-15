@@ -1,10 +1,10 @@
-import { gql, makeVar, useMutation } from '@apollo/client';
-import { faSquarePlus, faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { makeVar } from '@apollo/client';
+import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { IconButton, IconLinkButton } from './IconButton';
+import { DeleteButton } from './DeleteButton';
+import { IconLinkButton } from './IconButton';
 import { MenuItems } from './TopBar';
-import { useGraphQL } from './useGraphQL';
 
 export function useSearchParams(
     nav = false
@@ -55,16 +55,6 @@ export function useSearchParams(
     return [selected, appendSelected, overwriteSelected, removeSelected, isSelected];
 }
 
-export function DeleteButton() {
-    const { deleteMany, refreshGrid } = useGraphQL();
-    const [mutate, { loading, error, data }] = useMutation(gql(deleteMany), { refetchQueries: [refreshGrid] });
-    const [selected] = useSearchParams();
-    console.log('selected', selected);
-    const onClick = useCallback(() => {
-        mutate({ variables: { ids: selected } });
-    }, [mutate, selected]); 
-    return <IconButton icon={faTrash} size='2x' title='Delete records.' onClick={onClick} />;
-}
 export function MenuBar() {
     return (
         <div className='flex items-center'>

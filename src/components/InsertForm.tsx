@@ -6,7 +6,7 @@ import { ToastType } from '../contexts/ToasterContext';
 import { useAlert } from '../hooks/useAlert';
 import { useGraphQL } from './useGraphQL';
 import { ControlOptions, useForm } from './useForm';
-import { Spinner } from './Grid';
+import { Spinner } from "./Spinner";
 import { useOverlay } from '../hooks/useOverlay';
 import { InputControl, SelectControl } from './InputControl';
 import React from 'react';

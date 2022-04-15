@@ -4,6 +4,7 @@ import { kebabToCamelCase } from './kebabToCamelCase';
 import { useCollectionName } from './useCollectionName';
 import { apollo } from '../config/apollo';
 import * as CRUD from './../config/apollo.json';
+import { makeVar } from '@apollo/client';
 
 export type PrimitiveField = string;
 export type NestedObjectField = [objectName: string, properties: Field[]];
@@ -68,11 +69,15 @@ export type QueryLiteral = {
     dropdown: string;
     refetchQueries: string[];
     fields: Field[];
+    allFields: string;
+    allColumns: ColDef[];
 };
+
+export const $defs = makeVar(CRUD as Record<keyof typeof CRUD, QueryLiteral>);
 export function useCRUD($collection?: string) {
     const collection = useCollectionName($collection) as keyof typeof CRUD;
-    const crud = CRUD as Record<keyof typeof CRUD, QueryLiteral>;
-    const queriesAndMutations: QueryLiteral = crud[collection];
+    const queriesAndMutations: QueryLiteral = $defs()[collection];
+    return queriesAndMutations;
 }
 export function useGraphQL(inCollection?: string) {
     function handleProp(x: string | [string, string[], string?]): string {

@@ -2,7 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import React, { useCallback } from 'react';
 import { IconButton } from './IconButton';
-import { useCRUD, useGraphQL } from './useGraphQL';
+import { useCRUD } from './useGraphQL';
 import { useSearchParams } from './MenuBar';
 
 export function DeleteButton() {
