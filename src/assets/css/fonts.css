@@ -1,0 +1,10 @@
+@import './fonts-firasans';
+@import './fonts-montserrat';
+@import './fonts-opensans';
+@import './fonts-patrickhand';
+@import './fonts-raleway';
+
+html,
+body {
+    font-family: 'Open Sans' !important;
+}

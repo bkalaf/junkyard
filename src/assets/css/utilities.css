@@ -1,0 +1,17 @@
+@import 'tailwindcss/utilities';
+
+@layer utilities {
+    [aria-hidden='true'] {
+        display: none;
+    }
+
+    [role='tooltip'] {
+        position: absolute;
+    }
+    /* .hoverable {
+        @apply trans hover:bg-white hover:shadow-lg hover:border-yellow hover:text-red hover:scale-105;
+    }
+    .group-hoverable {
+        @apply trans group-hover:bg-white group-hover:shadow-lg group-hover:border-yellow group-hover:text-red hover:scale-105;
+    } */
+}

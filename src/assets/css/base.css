@@ -1,0 +1,166 @@
+@import 'tailwindcss/base';
+
+@layer base {
+    label {
+        @apply text-xl font-bold font-fira-sans before:content-["__"] text-white whitespace-pre flex;
+    }
+    input {
+        @apply flex my-1 ml-3 text-lg font-normal rounded-lg shadow-md font-fira-sans shadow-black;
+    }
+    /* input[type="text"] {
+        font-family: "Patrick Hand" !important;
+    } */
+    /* details {
+        @apply border border-black rounded-md shadow-md;
+    } */
+    /* summary {
+        @apply text-lg font-bold uppercase list-item;
+    } */
+
+    caption {
+        caption-side: top;
+    }
+
+    fieldset {
+        @apply relative bg-amber/75 pb-2 px-1 py-0.5 sm:col-span-2 md:col-span-3 xl:col-span-4 grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 justify-center min-w-full;
+    }
+
+    legend {
+        @apply min-w-full px-2 text-xl font-bold text-white bg-black shadow-xl rounded-xl font-fira-sans;
+    }
+
+    form>header {
+        @apply text-xl font-bold leading-loose tracking-wide text-white bg-black border-cyan font-fira-sans sm:md:col-span-3 xl:col-span-4 pl-3 before:content-["*_"];
+    }
+
+    form.insert {
+        @apply grid grid-cols-2 text-black border-2 border-black sm:md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2 bg-stone-light/50 font-fira-sans;
+    }
+
+    form>div.field,
+    fieldset>div.field {
+        @apply relative flex flex-col-reverse justify-center p-1 pb-4 bg-white/75;
+    }
+
+    form>footer {
+        @apply sm:md:col-span-3 xl:col-span-4;
+    }
+
+    div.field>label {
+        @apply font-fira-sans text-xl font-bold ml-4 mb-0.5 min-w-full text-left;
+    }
+
+    div.field>input,
+    select,
+    textarea {
+        @apply font-fira-sans font-semibold py-1 px-3 whitespace-pre before:content-["_"] border border-neutral/75 shadow-lg shadow-blue-dark rounded-lg transition-all duration-700 delay-75 ease-in-out hover:ring-2 hover:ring-amber flex min-w-full placeholder:text-pink-light/50 text-blue-dark hover:scale-105 transform;
+    }
+
+    div.field>input.calculated {
+        @apply min-w-full px-3 py-1 font-medium border rounded-lg shadow-lg font-fira-sans border-neutral/75 shadow-sky-very-dark bg-cyan-light;
+    }
+
+    div.field>small.feedback {
+        @apply inline-flex text-lg font-extrabold text-center text-red font-montserrat place-self-center;
+    }
+
+    form>footer>div.button-group {
+        @apply grid items-center justify-center w-full grid-cols-3 col-span-2 mx-auto bg-white gap-x-6;
+    }
+
+    label>span>span {
+        @apply inline-flex border border-white rounded-2xl bg-black/75 p-0.5;
+    }
+
+    /* div.button-group>button {
+        @apply flex items-center justify-center w-1/2 mx-auto font-bold text-center text-white transition-all duration-700 ease-in-out delay-75 transform border-2 rounded-md bg-blue-dark/75 hover:ring-2 hover:ring-red disabled:bg-black/25 disabled:text-white/25 disabled:opacity-25;
+    } */
+
+    table {
+        @apply space-x-2 space-y-1 divide-black;
+    }
+
+    table>thead {
+        @apply text-white border border-white bg-slate-dark;
+    }
+
+    th {
+        @apply mx-1 font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-fira-sans bg-sky-dark;
+    }
+
+    th[scope='row'] {
+        @apply items-center justify-center text-center bg-black border-none;
+    }
+
+    li>a>svg {
+        @apply shadow-lg bg-slate-very-dark text-yellow peer-active:text-red hover:text-red shadow-blue ;
+        
+    }
+/* 
+    tr:not(.selected) {
+        @apply font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-fira-sans even:bg-slate-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light;
+    } */
+
+    td {
+        @apply border border-black border-dashed;
+    }
+
+    nav[role='navigation'] {
+        @apply grid items-center justify-start w-full grid-cols-12 p-1 space-x-2 text-white bg-black;
+    }
+
+    nav[role='navigation']>button {
+        @apply inline-flex text-xl font-bold text-white transition-all border border-white font-fira-sans bg-blue-dark;
+    }
+
+    input {
+        @apply border shadow-inner rounded-xl ring-1 ring-slate-light/75;
+    }
+
+    .icon-cell {
+        @apply inline-flex bg-black border text-yellow border-yellow;
+    }
+
+
+    input {
+        @apply text-white rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
+    }
+    table {
+        @apply border-collapse;
+    }
+
+    td>table { 
+        @apply even:bg-emerald-dark even:text-white odd:bg-lime odd:text-black;
+    }
+    td>table>thead {
+        @apply bg-yellow-light text-blue;
+    }
+    td>table>thead>tr>th {
+        @apply text-center align-middle border-none rounded-none bg-yellow-light text-blue;
+    }
+    td>table>tbody>tr>td {
+        @apply p-0 m-0 text-center align-middle bg-transparent border-none rounded-none;
+    }
+    td>table>thead>tr>th,
+    td>table>tbody>tr>td,
+    td>table {
+        @apply font-medium font-fira-sans;
+    }
+
+    div, section, main, html, td, table, input, select, textarea, a {
+        @apply text-sm text-black font-fira-sans;
+    }
+    td, th {
+        @apply leading-loose tracking-wider whitespace-pre;
+    }
+    .selected {
+        @apply font-normal text-white transition-all duration-700 ease-in-out delay-75 transform scale-105 border-2 border-black border-double shadow-lg font-fira-sans even:bg-slate-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light bg-orange shadow-black ring;
+    }
+    .selected > td {
+        @apply text-white bg-orange;
+    }
+
+    tr>td {
+        @apply pl-3 pr-3;
+    }
+}

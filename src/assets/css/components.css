@@ -1,0 +1,167 @@
+@import 'tailwindcss/components';
+
+@layer components {
+    .ui-bar {
+        @apply border-2 py-0.5 space-x-1 w-full flex justify-between flex-row font-bold text-xl font-fira-sans tracking-wider leading-snug shadow-md pb-1 ;
+    }
+    .black-bg {
+        @apply text-white bg-black/90 border-white/50 shadow-cyan;
+    }
+    .rose-bg {
+        @apply text-white bg-rose-dark/90 border-black/70 shadow-black;
+    }
+    .black-ui-bar {
+        @apply black-bg ui-bar;
+    }
+    .rose-ui-bar {
+        @apply justify-center rose-bg ui-bar ;
+    }
+    .rounded-b {
+        @apply border-b rounded-b-md;
+    }
+
+    .rounded-t {
+        @apply border-t rounded-t-md;
+    }
+
+    .btn {
+        @apply flex py-0.5 m-0.5 hover:bg-pink transition-all duration-1000 delay-150 rounded-lg ease-in-out font-semibold transform hover:scale-110 items-center justify-center ring ring-transparent focus:ring-cyan disabled:bg-neutral disabled:text-opacity-20 disabled:cursor-not-allowed tracking-wider leading-snug text-xl shadow-md border-2;
+    }
+
+    .btn-blue {
+        @apply text-white border border-double shadow-md border-white/75 bg-blue-dark shadow-cyan btn;
+    }
+
+    .teal-bg {
+        @apply text-black bg-teal-dark border-blue-very-dark/90 shadow-cyan;
+    }
+    .red-bg {
+        @apply text-white bg-red-dark/90 border-black/80 shadow-magenta hover:bg-cyan focus:ring-indigo-dark disabled:bg-neutral/90 disabled:text-black disabled:text-opacity-30 hover:text-yellow hover:scale-110;
+    }
+    .trans {
+        @apply transition-all duration-1000 ease-in-out delay-150 transform;
+    }
+    .zinc-bg {
+        @apply text-white trans border-black/80 bg-zinc-dark shadow-white hover:bg-blue-dark hover:text-white-light ring-2 ring-transparent hover:ring-cyan hover:border focus:ring-yellow disabled:bg-neutral/90 disabled:text-black disabled:text-opacity-30;
+    }
+    .btn-red {
+        @apply btn red-bg ;
+    }
+    .btn-zinc {
+        @apply btn zinc-bg;
+    }
+    .btn-zinc-icon {
+        @apply btn zinc-bg;
+    }
+    .btn-teal {
+        @apply teal-bg btn;
+    }
+    .indigo-bg {
+        @apply text-white bg-indigo-dark border-white/75 shadow-magenta;
+    }
+    .btn-indigo {
+        @apply btn indigo-bg;
+    }
+    .no-mp {
+        @apply p-0 m-0;
+    }
+    .btn-icon {
+        @apply px-2.5 py-1.5;
+    }
+
+    .btn-group {    
+        @apply flex flex-row;
+    }
+
+    .auth-btn {
+        @apply btn-red px-2.5 py-0.5;
+    }
+    .top-bar {
+        @apply rounded-b black-ui-bar;
+    }
+
+    .tool-bar {
+        @apply rose-ui-bar;
+    }
+
+    .status-bar {
+        @apply border-t black-ui-bar rounded-t-md;
+    }
+
+    .status-bar-item {
+        @apply inline-flex mx-1.5 my-0.5 text-base leading-snug font-bold items-center bg-sky-dark border border-black rounded-lg text-white;
+    }
+
+    .toast {}
+
+    .warning-toast {
+        @apply ml-3 text-lg font-bold text-left text-white shadow-md bg-orange-dark shadow-orange;
+    }
+
+    .info-toast-header {
+        @apply flex w-full ml-2 text-lg font-bold text-center text-white shadow-md bg-sky-very-dark/80 shadow-black;
+    }
+    .info-toast-subheader {
+        @apply flex w-full ml-2 text-base font-bold text-center text-white shadow-md bg-sky shadow-black;
+    }
+    .info-toast-body {
+        @apply flex flex-grow w-full ml-2 text-base font-bold text-left text-black shadow-md font-fira-sans bg-sky-light shadow-cyan;
+    }
+
+    .success-toast-header {
+        @apply flex w-full ml-2 text-lg font-bold text-center text-white shadow-md bg-emerald-very-dark/80 shadow-black;
+    }
+    .success-toast-subheader {
+        @apply flex w-full ml-2 text-base font-bold text-center text-white shadow-md bg-green shadow-black; 
+    }
+    .success-toast-body {
+        @apply flex flex-grow w-full ml-2 text-base font-bold text-left text-black shadow-md font-fira-sans bg-green-light shadow-black;
+    }
+
+    .warning-toast-header {
+        @apply flex w-full ml-2 text-lg font-bold text-center text-white shadow-md bg-orange-dark shadow-black;
+    }
+    .warning-toast-subheader {
+        @apply flex w-full ml-2 text-base font-bold text-center text-white shadow-md bg-amber-light shadow-black; 
+    }
+    .warning-toast-body {
+        @apply flex flex-grow w-full ml-2 text-base font-bold text-left text-black shadow-md font-fira-sans bg-yellow-light shadow-black;
+    }
+
+    .failure-toast-header {
+        @apply flex w-full ml-2 text-lg font-bold text-center text-white shadow-md bg-red-dark/80 shadow-black;
+    }
+    .failure-toast-subheader {
+        @apply flex w-full ml-2 text-base font-bold text-center text-white shadow-md bg-rose shadow-black; 
+    }
+    .failure-toast-body {
+        @apply flex flex-grow w-full ml-2 text-base font-bold text-left text-black shadow-md font-fira-sans bg-pink-light shadow-black;
+    }
+
+    .error-toast-header {
+        @apply flex w-full ml-2 text-lg font-bold text-center text-white shadow-md bg-indigo-dark/80 shadow-black;
+    }
+    .error-toast-subheader {
+        @apply flex w-full ml-2 text-base font-bold text-center text-white shadow-md bg-violet shadow-black; 
+    }
+    .error-toast-body {
+        @apply flex flex-grow w-full ml-2 text-base font-bold text-left text-black shadow-md font-fira-sans bg-magenta-light shadow-black;
+    }
+
+    .toast-title {
+        @apply w-full px-1 text-center text-white bg-black border border-double shadow-lg border-white/50 shadow-transparent;
+    }
+
+    .toast-icon {
+        @apply bg-black text-yellow;
+    }
+
+    .toast-body {
+        @apply mx-1.5 my-1 text-base tracking-tight font-semibold text-black font-fira-sans leading-snug;
+    }
+
+
+    .sidebar-anchor-top {
+        @apply flex flex-col w-full h-12 justify-self-start font-fira-sans;
+    }
+}

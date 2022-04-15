@@ -1,0 +1,40 @@
+@import './fonts.css';
+@import './animations.css';
+@import './base.css';
+@import './components.css';
+@import './utilities.css';
+@import '../../../node_modules/@fortawesome/fontawesome-svg-core/styles.css';
+
+.font-small-caps {
+    font-variant-caps: small-caps;
+}
+
+.font-petite-caps {
+    font-variant-caps: petite-caps;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.ltr {
+    direction: ltr;
+}
+
+.network-online {
+    @apply bg-lime;
+}
+
+.network-offline {
+    @apply bg-red;
+}
+
+.navigation-details {
+    list-style: ;
+}
+
+.theme-primary {
+    --fa-primary-color: linen;
+    --fa-secondary-color: dodgerblue;
+    --fa-secondary-opacity: 1.0;
+}
