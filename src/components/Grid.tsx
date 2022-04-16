@@ -3,7 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from './MenuBar';
 import { Spinner } from './Spinner';
-import { useCRUD, useGraphQL } from "./useGraphQL";
+import { useGraphQL } from "./useGraphQL";
+import { useCRUD } from "../hooks/useCRUD";
 
 export function getParentNode(current: HTMLElement | null, tag: string): HTMLElement | null {
     if (current == null) return null;

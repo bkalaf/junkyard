@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import React from 'react';
-import { InsertForm } from './InsertForm';
+import { InsertForm } from "./InsertForm.1";
 
 
 export function InsertRecordForm<T extends { _id: string; }>({

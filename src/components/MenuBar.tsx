@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { DeleteButton } from './DeleteButton';
 import { IconLinkButton } from './IconButton';
-import { MenuItems } from './TopBar';
+import { MenuItems } from "./MenuItems";
 
 export function useSearchParams(
     nav = false

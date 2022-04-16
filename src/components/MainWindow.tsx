@@ -6,11 +6,14 @@ import { useAuth } from '../hooks/useAuth';
 import { useOverlay } from '../hooks/useOverlay';
 import { OverlayMount } from './OverlayMount';
 import { Toaster } from './Toaster';
-import { NotFound, TopBar } from './TopBar';
+import { TopBar } from './TopBar';
+import { NotFound } from "./NotFound";
 import { Grid } from './Grid';
-import { FacilityInsertForm, InsertForm, SelfStorageInsertForm } from './InsertForm';
+import { InsertForm } from "./InsertForm.1";
+import { SelfStorageInsertForm } from "./SelfStorageInsertForm";
+import { FacilityInsertForm } from "./FacilityInsertForm";
 import { InsertRecordForm } from "./InsertRecordForm";
-import { useCollectionName } from './useCollectionName';
+import { useCollectionName } from '../hooks/useCollectionName';
 
 export function ButtonGroup({ children }: { children: Children }) {
     return (

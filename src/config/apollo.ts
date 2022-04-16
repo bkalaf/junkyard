@@ -1,10 +1,23 @@
 ///<reference path="./../global.d.ts" />
 import { kebabToCamelCase } from '../components/kebabToCamelCase';
 import pluralize from '../components/pluralize';
-import { capitalize } from '../components/TopBar';
-import * as fs from 'graceful-fs';
-import { Field, toAllColumns, toAllFields } from '../components/useGraphQL';
+import { capitalize } from '../components/capitalize';
+// import * as fs from 'graceful-fs';
+import { Field, ReferenceField } from '../components/Field';
+import { toAllColumns } from '../components/toAllColumns';
+import { toAllFields } from '../components/toAllFields';
+import { FieldObj } from '../components/FieldObj';
 
+export function adjustReferenceFields(fields: Field[]) {
+    return (formdata: Record<string, any>) => {
+        return fields.filter(FieldObj.is.reference).map((x) => {
+            const [collection, fieldname, projection] = x as ReferenceField;
+            const oid = formdata[fieldname];
+            formdata[fieldname] = { link: oid };
+            return formdata;
+        });
+    };
+}
 function refetchQueries(collection: string) {
     const camel = { s: kebabToCamelCase(collection), p: pluralize(kebabToCamelCase(collection)) };
     const pascal = { s: capitalize(camel.s), p: capitalize(camel.p) };
@@ -115,4 +128,4 @@ console.log(
     ].join('\n')
 );
 
-fs.writeFileSync('apollo.json', JSON.stringify(apollo));
+// fs.writeFileSync('apollo.json', JSON.stringify(apollo));
