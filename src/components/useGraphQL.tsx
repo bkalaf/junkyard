@@ -9,6 +9,70 @@ import { apollo } from '../config/apollo';
  * @deprecated
  */
 
+export const Field = {
+    is: {
+        primitive: (x: Field): x is PrimitiveField => typeof x === 'string',
+        nestedObj: (x: Field): x is NestedObjectField => Array.isArray(x) && x.length === 2,
+        local: (x: Field): x is LocalField => Array.isArray(x) && x.length === 1,
+        reference: (x: Field): x is ReferenceField => Array.isArray(x) && x.length === 3
+    }
+};
+
+export function fieldCataMorph<T>(
+    isPrimitive: (x: string) => T,
+    isNestedObj: (x: [string, T[]]) => T,
+    isLocal: (x: [T]) => T,
+    isReference: (x: [string, string, T[]]) => T
+) {
+    return function (field: Field): T {
+        const recurse = fieldCataMorph(isPrimitive, isNestedObj, isLocal, isReference);
+        if (Field.is.primitive(field)) return isPrimitive(field);
+        if (Field.is.nestedObj(field)) return isNestedObj([field[0], field[1].map(recurse)]);
+        if (Field.is.local(field)) return isLocal([recurse(field[0])]);
+        return isReference([field[0], field[1], field[2].map(recurse)]);
+    };
+}
+
+export type ColDef = { header: string; property: string };
+export function toAllColumns(fields: Field[]) {
+    const ifPrimitive = (x: string) => [{ header: ofKebabOrCamelCaseToTitle(x), property: x }];
+    const ifLocal = ([x]: [ColDef[]]) => [x[0]];
+    const ifReference = ([collection, fieldName, props]: [string, string, ColDef[][]]) =>
+        props
+            .reduce((pv, cv) => [...pv, ...cv], [])
+            .filter((x) => x.property !== '_id')
+            .map((y) => ({ header: ofKebabOrCamelCaseToTitle(collection), property: [fieldName, y.property].join('.') }));
+    const ifNestedObj = ([objName, props]: [string, ColDef[][]]): ColDef[] =>
+        props.reduce((pv, cv) => [...pv, ...cv], []).map((y) => ({ ...y, property: [objName, y.property].join('.') }));
+    const recurse = fieldCataMorph<ColDef[]>(ifPrimitive, ifNestedObj, ifLocal, ifReference);
+    return fields.map(recurse).reduce((pv, cv) => [...pv, ...cv], []);
+}
+
+export function toAllFields(fields: Field[]) {
+    const ifPrimitive = (x: string) => `${x}\n`;
+    const ifNested = ([obj, props]: [string, string[]]) => [`${obj} {\n`, ...props, `}\n`].join('');
+    const ifReference = ([collection, fieldName, props]: [string, string, string[]]) =>
+        [`${fieldName} {\n`, ...props, `}\n`].join('');
+    const ifLocal = ([name]: [string]) => [name.split('\n')[0], ' @client', name.split('\n')[1], '\n'].join('');
+    const recurse = fieldCataMorph(ifPrimitive, ifNested, ifLocal, ifReference);
+    return fields.map(recurse).join('');
+}
+export type QueryLiteral = {
+    selectAll: string;
+    selectOne: string;
+    insertOne: string;
+    updateOne: string;
+    deleteMany: string;
+    dropdown: string;
+    refetchQueries: string[];
+    fields: Field[];
+};
+export function useCRUD($collection?: string) {
+    const collection = useCollectionName($collection) as keyof typeof CRUD;
+    const crud = CRUD as Record<keyof typeof CRUD, QueryLiteral>;
+    const queriesAndMutations: QueryLiteral = crud[collection];
+    return queriesAndMutations;
+}
 export function useGraphQL(inCollection?: string) {
     function handleProp(x: string | [string, string[], string?]): string {
         if (Array.isArray(x)) {
