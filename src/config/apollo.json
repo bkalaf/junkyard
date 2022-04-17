@@ -52,7 +52,7 @@
         ],
         "allFields": "_id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n",
         "deleteMany": "mutation FacilityDelete($ids: [ObjectId]) {\n  count: deleteManyFacilities(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
-        "dropdown": "query FacilityDropdown {\n  options: facilities {\n    key\n    value\n    label\n  }\n}",
+        "dropdown": "query {\noptions: facilities {\n_id\nselfStorage\n{ _id\nname\n} address {\nstreet\ncity\nstate\n}\nlabel @client\nkey @client\nvalue @client\n}\n}",
         "fields": [
             "_id",
             [
@@ -120,13 +120,14 @@
         ],
         "allFields": "_id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n",
         "deleteMany": "mutation RentalUnitDelete($ids: [ObjectId]) {\n  count: deleteManyRentalUnits(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
-        "dropdown": "query RentalUnitDropdown {\n  options: rentalUnits {\n    key\n    value\n    label\n  }\n}",
+        "dropdown": "query RentalUnitDropdown {\n  options: rentalUnits {\n    key @client\n    value @client\n    label @client\n  }\n}",
         "fields": [
             "_id",
             [
                 "name"
             ],
             "unit",
+            "closeDate",
             [
                 "size",
                 [
@@ -135,8 +136,8 @@
                 ]
             ],
             [
-                "rental-unit",
-                "rentalUnit",
+                "facility",
+                "facility",
                 [
                     "_id",
                     "name"
@@ -149,7 +150,7 @@
             "RentalUnitGridOne",
             "RentalUnitDropdown"
         ],
-        "selectAll": "query RentalUnitsGridAll {\n      grid: rentalUnits(sortBy: UNIT_ASC) {\n          _id\n          _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n      }\n  }",
+        "selectAll": "query RentalUnitsGridAll {\n      grid: rentalUnits(sortBy: UNIT_ASC) {\n          _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nfacility {\n_id\n}\n\n      }\n  }",
         "selectOne": "query RentalUnitGridOne($query: RentalUnitQueryInput!) {\n\trecord: rentalUnit(query: $query) {\n\t\t_id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}",
         "updateOne": "mutation RentalUnitUpdate($id: ObjectId!, $set: RentalUnitUpdateInput!) {\n  record: updateOneRentalUnit(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}"
     },
@@ -170,7 +171,7 @@
         ],
         "allFields": "_id\nname\nwebsite\n",
         "deleteMany": "mutation SelfStorageDelete($ids: [ObjectId]) {\n  count: deleteManySelfStorages(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
-        "dropdown": "query SelfStorageDropdown {\n  options: selfStorages {\n    key\n    value\n    label\n  }\n}",
+        "dropdown": "query SelfStorageDropdown {\n  options: selfStorages {\n   _id, name, website, key @client\n    value @client\n    label @client\n  }\n}",
         "fields": [
             "_id",
             "name",

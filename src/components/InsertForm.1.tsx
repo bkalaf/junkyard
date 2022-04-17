@@ -30,6 +30,7 @@ export function InsertForm<T extends { _id: string }, E extends Error>(props: In
             toastTitle: successTitle
         },
         failure: { toastBody: failureBody, toastSubtitle: failureSubtitle, toastTitle: failureTitle },
+        presubmit,
         children
     } = props;
     const [_, { appendOverlay, popOverlay }] = useOverlay();
@@ -91,12 +92,12 @@ export function InsertForm<T extends { _id: string }, E extends Error>(props: In
                 console.log('formdata', fd);
                 mutate({
                     variables: {
-                        data: fd
+                        data: presubmit ? presubmit(fd) : fd
                     },
                     refetchQueries: [selectAll as DocumentNode]
                 });
             }),
-        [handleSubmit, mutate, selectAll]
+        [handleSubmit, mutate, presubmit, selectAll]
     );
     useEffect(() => {
         appendOverlay(

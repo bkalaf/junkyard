@@ -4,10 +4,12 @@ import { InsertForm } from "./InsertForm.1";
 
 
 export function InsertRecordForm<T extends { _id: string; }>({
+    preSubmit,
     children
 }: {
     // eslint-disable-next-line @typescript-eslint/ban-types
     children: Children;
+    preSubmit?: (x: any) => any
 }) {
     const success = useMemo(
         () => ({
@@ -27,7 +29,7 @@ export function InsertRecordForm<T extends { _id: string; }>({
         []
     );
     return (
-        <InsertForm success={success} failure={failure}>
+        <InsertForm success={success} failure={failure} presubmit={preSubmit}>
             {children}
         </InsertForm>
     );

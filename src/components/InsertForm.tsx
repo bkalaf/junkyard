@@ -15,6 +15,7 @@ export type InsertFormProps<T> = {
         toastTitle?: (data: Error) => string;
         toastSubtitle?: (data: Error) => string;
     };
+    presubmit?: (x: any) => any
 };
 export const InsertFormContext = createContext<
     { register: (name: string, options?: ControlOptions) => void } | undefined
