@@ -13,7 +13,8 @@ export function InsertRecordForm<T extends { _id: string; }>({
         () => ({
             toastBody: (data: T) => `You have successfully inserted (1) item.`,
             toastSubtitle: (fd: T) => fd._id,
-            toastTitle: (fd: { _id: string; }) => 'SUCCESS!'
+            toastTitle: (fd: { _id: string; }) => 'SUCCESS!',
+            navigate: () => '..'
         }),
         []
     );

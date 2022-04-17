@@ -9,7 +9,7 @@ import { MenuItems } from "./MenuItems";
 export function useSearchParams(
     nav = false
 ): [
-    selected: string[],
+    selected: () => string[],
     appendSelected: (item: string) => void,
     overwriteSelected: (item: string) => void,
     deleteSelected: (item: string) => void,
@@ -49,9 +49,11 @@ export function useSearchParams(
     );
     const search = useMemo(() => searchParams.toString(), [searchParams]);
     useEffect(() => {
-        if (nav) navigate(`${location.pathname}?${search}`);
-    }, [location.pathname, navigate, search, nav]);
-    const selected = useMemo(() => searchParams.get('selected')?.split('&') ?? [], [searchParams]);
+        if (nav) navigate(`${location.pathname}?${searchParams.toString()}`);
+    }, [location.pathname, navigate, nav, searchParams]);
+    const selected = useCallback(() => searchParams.get('selected')?.split('&') ?? [], [searchParams]);
+    console.log('selected', selected);
+    console.log('searchParams', searchParams.toString());
     return [selected, appendSelected, overwriteSelected, removeSelected, isSelected];
 }
 

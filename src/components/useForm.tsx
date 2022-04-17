@@ -1,37 +1,20 @@
 import { faRectangleHistoryCircleUser } from '@fortawesome/pro-duotone-svg-icons';
 import { useCallback, useRef, useState } from 'react';
-import { adjustReferenceFields } from '../config/apollo';
+import { useCRUD } from '../hooks/useCRUD';
+import { buildFormData } from './buildFormData';
 import { Field } from './Field';
-import { setProp } from './setProp';
-import { useGraphQL } from './useGraphQL';
+import { useToggler } from './useToggler';
 
-export function buildFormData(el: HTMLFormElement, fields: Field[]) {
-    const formData = new FormData(el);
-    return adjustReferenceFields(fields)(
-        Array.from(formData.entries()).reduce((pv, [name, value]) => {
-            return setProp(name, value)(pv);
-        }, {} as Record<string, any>)
-    );
-}
 export function isIn<T>(...values: T[]) {
     return function (item: T) {
         return values.includes(item);
     };
 }
-export function useToggler(
-    initial = false
-): [toggle: boolean, toggleOn: () => void, toggleOff: () => void, toggler: () => void] {
-    const [toggle, setToggle] = useState(initial);
-    const toggleOn = useCallback(() => setToggle(true), []);
-    const toggleOff = useCallback(() => setToggle(false), []);
-    const toggler = useCallback(() => setToggle((prev) => !prev), []);
-    return [toggle, toggleOn, toggleOff, toggler];
-}
 export type ControlOptions = {
     validators?: string[];
     calculation?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
-export function useForm(): [
+export function useForm(fields: Field[]): [
     formRef: React.RefObject<HTMLFormElement>,
     handleSubmit: (cb: (fd: any) => void) => (ev: React.FormEvent<HTMLFormElement>) => void,
     register: (name: string, options?: ControlOptions) => { name: string; id: string },
@@ -109,16 +92,16 @@ export function useForm(): [
                     showFeedback();
                     return;
                 }
-                cb(buildFormData(ev.target as HTMLFormElement));
+                cb(buildFormData(ev.target as HTMLFormElement, fields));
             };
         },
-        [hideFeedback, showFeedback, validate]
+        [fields, hideFeedback, showFeedback, validate]
     );
     const onInput = useCallback((ev: React.FormEvent<HTMLElement>) => {
         console.log(ev);
         const target = (ev.target as any).form as HTMLFormElement;
-        const fd = buildFormData(target);
+        const fd = buildFormData(target, fields);
         calculations.current.map((c) => c(target)(fd));
-    }, []);
+    }, [fields]);
     return [formRef, handleSubmit, register, onInput, displayFeedback, errors];
 }

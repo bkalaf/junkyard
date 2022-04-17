@@ -9,7 +9,7 @@ export function LogIn(props: { onSuccess: () => void; }) {
     const { logIn, email } = useAuth();
     const successToast = useAlert(ToastType.SUCCESS);
     const failureToast = useAlert(ToastType.FAILURE);
-    const [ref, handleSubmit, register, onInput, displayFeedback, errors] = useForm();
+    const [ref, handleSubmit, register, onInput, displayFeedback, errors] = useForm([]);
 
     return (
         <form

@@ -1,6 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { createContext, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { createContext } from 'react';
 import { ControlOptions } from './useForm';
 
 export type InsertFormProps<T> = {
@@ -23,12 +22,6 @@ export const InsertFormContext = createContext<
 
 export const FieldSetContext = createContext<{ objName: string } | undefined>(undefined);
 
-export function useRequireAuth() {
-    const { isAuthenticated } = useAuth();
-    useEffect(() => {
-        if (!isAuthenticated)
-    }, []);
-}
 export const stateMap = {
     AL: 'Alabama',
     AZ: 'Arizona',
