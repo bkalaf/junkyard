@@ -1,10 +1,13 @@
-import { gql, useQuery } from '@apollo/client';
+import { DocumentNode, gql, useQuery } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from './MenuBar';
 import { Spinner } from './Spinner';
-import { useGraphQL } from "./useGraphQL";
-import { useCRUD } from "../hooks/useCRUD";
+import { useCRUD, useDocumentNodes } from "../hooks/useCRUD";
+import { useRequireAuth } from './useRequireAuth';
+import { getProp } from './setProp';
+import { Field } from './Field';
+import { ColDef } from './useGraphQL-old';
 
 export function getParentNode(current: HTMLElement | null, tag: string): HTMLElement | null {
     if (current == null) return null;
@@ -15,10 +18,11 @@ export function getParentNode(current: HTMLElement | null, tag: string): HTMLEle
 }
 export function Grid<T extends { _id: string } & Record<string, any>>() {
     const navigate = useNavigate();
+    useRequireAuth();
     // const { selectAll, headers, allColumns, resultPlural } = useGraphQL();
-    const { allColumns, selectAll } = useCRUD();
+    const { allColumns, selectAll } = useDocumentNodes();
     const [selected, appendSelected, overwriteSelected, deleteSelected, isSelected] = useSearchParams(true);
-    const { data, loading, error } = useQuery<{ grid: T[] }, undefined>(gql(selectAll));
+    const { data, loading, error } = useQuery<{ grid: T[] }, undefined>(selectAll as DocumentNode, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-and-network' });
     const onClick = useCallback((ev: React.MouseEvent<HTMLTableRowElement>) => {
         const target = getParentNode(ev.target as HTMLElement, 'TR');
         if (target == null) throw new Error('parent not found');
@@ -48,7 +52,7 @@ export function Grid<T extends { _id: string } & Record<string, any>>() {
                 <table className='w-full h-auto table-auto'>
                     <thead>
                         <tr>
-                            {allColumns.map(x => x.header).map((x, ix) => (
+                            {(allColumns as ColDef[]).map(x => x.header).map((x, ix) => (
                                 <th
                                     key={ix}
                                     scope='col'
@@ -71,8 +75,9 @@ export function Grid<T extends { _id: string } & Record<string, any>>() {
                                     onClick={onClick}
                                     onDoubleClick={onDoubleClick}
                                 >
-                                    {allColumns.map((y, ix2) => {
-                                        return <td key={ix2}>{x[y.property]}</td>;
+                                    {(allColumns as ColDef[]).map((y, ix2) => {
+                                        console.log(y.property);
+                                        return <td key={ix2}>{getProp(y.property)(x)}</td>;
                                     })}
                                 </tr>
                             );

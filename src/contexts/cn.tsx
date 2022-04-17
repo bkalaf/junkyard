@@ -4,7 +4,6 @@ import { fst } from "./fst";
 import { distinct } from "./distinct";
 
 export function cn<T>(props: { className?: string; } & T, obj: Record<string, boolean>, ...classes: string[]) {
-    console.log('props', props, 'obj', obj, classes);
     const { className, ...remain } = props;
     const [t, f] = partitionBy<[string, boolean]>(snd)(Object.entries(obj));
     const [trues, falses] = [t.map(fst), f.map(fst)];

@@ -14,8 +14,11 @@ export function adjustReferenceFields(fields: Field[]) {
             const [collection, fieldname, projection] = x as ReferenceField;
             const oid = formdata[fieldname];
             formdata[fieldname] = { link: oid };
-            return formdata;
-        });
+            return (fd: Record<string, any>) => {
+                fd[fieldname] = { link: oid }
+                return fd;
+            };
+        }).reduce((pv, cv) => cv(pv), formdata);
     };
 }
 function refetchQueries(collection: string) {
@@ -28,7 +31,6 @@ function selectAll(collection: string, sortBy: string, fields: string) {
     const pascal = { p: capitalize(camel.p) };
     return `query ${pascal.p}GridAll {
       grid: ${camel.p}(sortBy: ${sortBy}) {
-          _id
           ${fields}
       }
   }`;
@@ -38,7 +40,6 @@ function selectOne(collection: string, fields: string) {
     const pascal = { s: capitalize(camel.s) };
     return `query ${pascal.s}GridOne($query: ${pascal.s}QueryInput!) {
 	record: ${camel.s}(query: $query) {
-		_id
     ${fields}
   }
 }`;
@@ -57,12 +58,12 @@ function deleteMany(collection: string) {
   }
 }`;
 }
-function insertOne(collection: string) {
+function insertOne(collection: string, fields: string) {
     const camel = { s: kebabToCamelCase(collection), p: pluralize(kebabToCamelCase(collection)) };
     const pascal = { s: capitalize(camel.s), p: capitalize(camel.p) };
     return `mutation ${pascal.s}Insert($data: ${pascal.s}InsertInput!) {
 	inserted: insertOne${pascal.s}(data: $data) {
-    _id 
+        ${fields}
   }  
 }
 `;
@@ -84,7 +85,7 @@ export const apolloEntry = (collection: string, sortBy: string, fields: string, 
     return {
         selectAll: selectAll(collection, sortBy, allFields),
         selectOne: selectOne(collection, allFields),
-        insertOne: insertOne(collection),
+        insertOne: insertOne(collection, allFields),
         deleteMany: deleteMany(collection),
         updateOne: updateOne(collection, allFields),
         dropdown: dropdown(collection),

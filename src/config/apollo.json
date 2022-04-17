@@ -1,51 +1,127 @@
 {
     "facility": {
-        "selectAll": "query FacilitiesGridAll {\n      grid: facilities(sortBy: SELFSTORAGE_ASC) {\n          _id\n          _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n      }\n  }",
-        "selectOne": "query FacilityGridOne($query: FacilityQueryInput!) {\n\trecord: facility(query: $query) {\n\t\t_id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
-        "insertOne": "mutation FacilityInsert($data: FacilityInsertInput!) {\n\tinserted: insertOneFacility(data: $data) {\n    _id \n  }  \n}\n",
+        "allColumns": [
+            {
+                "header": "_id",
+                "property": "_id"
+            },
+            {
+                "header": "Name",
+                "property": "name"
+            },
+            {
+                "header": "Phone",
+                "property": "phone"
+            },
+            {
+                "header": "Email",
+                "property": "email"
+            },
+            {
+                "header": "Facility Number",
+                "property": "facilityNumber"
+            },
+            {
+                "header": "Self Storage",
+                "property": "selfStorage.name"
+            },
+            {
+                "header": "Street",
+                "property": "address.street"
+            },
+            {
+                "header": "Suite",
+                "property": "address.suite"
+            },
+            {
+                "header": "City",
+                "property": "address.city"
+            },
+            {
+                "header": "State",
+                "property": "address.state"
+            },
+            {
+                "header": "Country",
+                "property": "address.country"
+            },
+            {
+                "header": "Postal Code",
+                "property": "address.postalCode"
+            }
+        ],
+        "allFields": "_id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n",
         "deleteMany": "mutation FacilityDelete($ids: [ObjectId]) {\n  count: deleteManyFacilities(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
-        "updateOne": "mutation FacilityUpdate($id: ObjectId!, $set: FacilityUpdateInput!) {\n  record: updateOneFacility(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
         "dropdown": "query FacilityDropdown {\n  options: facilities {\n    key\n    value\n    label\n  }\n}",
-        "refetchQueries": ["FacilitiesGridAll", "FacilityGridOne", "FacilityDropdown"],
         "fields": [
             "_id",
-            ["name"],
+            [
+                "name"
+            ],
             "phone",
             "email",
             "facilityNumber",
-            ["self-storage", "selfStorage", ["_id", "name"]],
-            ["address", ["street", "suite", "city", "state", "country", "postalCode"]]
+            [
+                "self-storage",
+                "selfStorage",
+                [
+                    "_id",
+                    "name"
+                ]
+            ],
+            [
+                "address",
+                [
+                    "street",
+                    "suite",
+                    "city",
+                    "state",
+                    "country",
+                    "postalCode"
+                ]
+            ]
         ],
-        "allFields": "_id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n",
-        "allColumns": [
-            { "header": "_id", "property": "_id" },
-            { "header": "Name", "property": "name" },
-            { "header": "Phone", "property": "phone" },
-            { "header": "Email", "property": "email" },
-            { "header": "Facility Number", "property": "facilityNumber" },
-            { "header": "Self Storage", "property": "selfStorage.name" },
-            { "header": "Street", "property": "address.street" },
-            { "header": "Suite", "property": "address.suite" },
-            { "header": "City", "property": "address.city" },
-            { "header": "State", "property": "address.state" },
-            { "header": "Country", "property": "address.country" },
-            { "header": "Postal Code", "property": "address.postalCode" }
-        ]
+        "insertOne": "mutation FacilityInsert($data: FacilityInsertInput!) {\n\tinserted: insertOneFacility(data: $data) {\n        _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }  \n}\n",
+        "refetchQueries": [
+            "FacilitiesGridAll",
+            "FacilityGridOne",
+            "FacilityDropdown"
+        ],
+        "selectAll": "query FacilitiesGridAll {\n      grid: facilities(sortBy: SELFSTORAGE_ASC) {\n          _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n      }\n  }",
+        "selectOne": "query FacilityGridOne($query: FacilityQueryInput!) {\n\trecord: facility(query: $query) {\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
+        "updateOne": "mutation FacilityUpdate($id: ObjectId!, $set: FacilityUpdateInput!) {\n  record: updateOneFacility(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}"
     },
     "self-storage": {
-        "selectAll": "query SelfStoragesGridAll {\n      grid: selfStorages(sortBy: NAME_ASC) {\n          _id\n          _id\nname\nwebsite\n\n      }\n  }",
-        "selectOne": "query SelfStorageGridOne($query: SelfStorageQueryInput!) {\n\trecord: selfStorage(query: $query) {\n\t\t_id\n    _id\nname\nwebsite\n\n  }\n}",
-        "insertOne": "mutation SelfStorageInsert($data: SelfStorageInsertInput!) {\n\tinserted: insertOneSelfStorage(data: $data) {\n    _id \n  }  \n}\n",
-        "deleteMany": "mutation SelfStorageDelete($ids: [ObjectId]) {\n  count: deleteManySelfStorages(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
-        "updateOne": "mutation SelfStorageUpdate($id: ObjectId!, $set: SelfStorageUpdateInput!) {\n  record: updateOneSelfStorage(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname\nwebsite\n\n  }\n}",
-        "dropdown": "query SelfStorageDropdown {\n  options: selfStorages {\n    key\n    value\n    label\n  }\n}",
-        "refetchQueries": ["SelfStoragesGridAll", "SelfStorageGridOne", "SelfStorageDropdown"],
-        "fields": ["_id", "name", "website"],
-        "allFields": "_id\nname\nwebsite\n",
         "allColumns": [
-            { "header": "_id", "property": "_id" },
-            { "header": "Name", "property": "name" },
-            { "header": "Website", "property": "website" }
-        ]
+            {
+                "header": "_id",
+                "property": "_id"
+            },
+            {
+                "header": "Name",
+                "property": "name"
+            },
+            {
+                "header": "Website",
+                "property": "website"
+            }
+        ],
+        "allFields": "_id\nname\nwebsite\n",
+        "deleteMany": "mutation SelfStorageDelete($ids: [ObjectId]) {\n  count: deleteManySelfStorages(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
+        "dropdown": "query SelfStorageDropdown {\n  options: selfStorages {\n    key\n    value\n    label\n  }\n}",
+        "fields": [
+            "_id",
+            "name",
+            "website"
+        ],
+        "insertOne": "mutation SelfStorageInsert($data: SelfStorageInsertInput!) {\n\tinserted: insertOneSelfStorage(data: $data) {\n        _id\nname\nwebsite\n\n  }  \n}\n",
+        "refetchQueries": [
+            "SelfStoragesGridAll",
+            "SelfStorageGridOne",
+            "SelfStorageDropdown"
+        ],
+        "selectAll": "query SelfStoragesGridAll {\n      grid: selfStorages(sortBy: NAME_ASC) {\n          _id\nname\nwebsite\n\n      }\n  }",
+        "selectOne": "query SelfStorageGridOne($query: SelfStorageQueryInput!) {\n\trecord: selfStorage(query: $query) {\n    _id\nname\nwebsite\n\n  }\n}",
+        "updateOne": "mutation SelfStorageUpdate($id: ObjectId!, $set: SelfStorageUpdateInput!) {\n  record: updateOneSelfStorage(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname\nwebsite\n\n  }\n}"
     }
 }
