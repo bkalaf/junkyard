@@ -48,6 +48,9 @@ export function MountInsert() {
             return <></>;
     }
 }
+export function FileInsert() {
+    return <>File insert</>
+}
 export function MainWindow() {
     const alert = useAlert(ToastType.INFO);
     const [_, { appendOverlay, popOverlay }] = useOverlay();
@@ -77,7 +80,12 @@ export function MainWindow() {
                         <Route index element={<Outlet />} />
                     </Route>
                     <Route path='queues'></Route>
-                    <Route path='files'></Route>
+                    <Route path='files'>
+                        <Route path=':collection'>
+                            <Route path='new' element={<FileInsert />} />
+                            <Route index element={<Grid />} />
+                        </Route>
+                    </Route>
                     <Route path='/' element={<Outlet />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

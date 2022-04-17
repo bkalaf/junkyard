@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { DeleteButton } from './DeleteButton';
 import { IconLinkButton } from './IconButton';
-import { MenuItems } from "./MenuItems";
+import { MenuItems } from './MenuItems';
 
 export function useSearchParams(
     nav = false
@@ -36,7 +36,11 @@ export function useSearchParams(
     const removeSelected = useCallback((item: string) => {
         setSearchParams((prev) => {
             const params = new URLSearchParams(prev.toString());
-            const current = params.get('selected')?.split('&').filter(x => x !== item) ?? [];
+            const current =
+                params
+                    .get('selected')
+                    ?.split('&')
+                    .filter((x) => x !== item) ?? [];
             params.set('selected', current.join('&'));
             return params;
         });
@@ -105,7 +109,26 @@ export function MenuBar() {
                     <Route index element={<Navigate to='v1' />} />
                 </Route>
                 <Route path='queues'></Route>
-                <Route path='files'></Route>
+                <Route path='files'>
+                    <Route path=':collection'>
+                        <Route
+                            index
+                            element={
+                                <>
+                                    <IconLinkButton
+                                        icon={faSquarePlus}
+                                        size='2x'
+                                        title='Insert a new record.'
+                                        to='new'
+                                    />
+                                    <DeleteButton />
+                                </>
+                            }
+                        />
+                    </Route>
+                    <Route path='entry'></Route>
+                    <Route index element={<MenuItems items={[['blob'], ['entry']]} />} />
+                </Route>
                 <Route path='/' element={<MenuItems items={[['api'], ['data'], ['queues'], ['files']]}></MenuItems>} />
                 <Route path='*' element={<Outlet />} />
             </Routes>

@@ -65,17 +65,43 @@ const cacheVar = new InMemoryCache({
                             id: (readField('facility') as Reference).__ref,
                             fragment: gql`
                                 fragment FacilitySingle on Facility {
+                                    _id
                                     name @client
+                                    address {
+                                        street
+                                        city
+                                        state
+                                    }
+                                    selfStorage {
+                                        _id
+                                        name
+                                    }
                                 }
                             `
                         })?.name;
                         const closeDate = readField({ fieldName: 'closeDate' });
+                        console.log(closeDate);
                         return [facility, closeDate].join(' - ');
                     }
                 }
             }
         },
-
+        Entry: {
+            fields: {
+                materializedPath: {
+                    read(existing, { readField, toReference, cache }) {
+                        const parent = readField('parent') as Reference;
+                        const name = readField('name') as { basename: string, extension: string };
+                        const parentEntry = parent == null ? { materializedPath: '/' } : cache.readFragment({ id: parent.__ref, fragment: gql`
+                            fragment EntrySingle on Entry {
+                                _id
+                                materializedPath @client
+                            }` }) as { materializedPath: string };
+                        return [parentEntry.materializedPath, [name.basename, name.extension].filter(x => x != null).join('.')].join('/');
+                    }
+                }
+            }
+        },
         Facility: {
             fields: {
                 name: {
@@ -101,8 +127,10 @@ const cacheVar = new InMemoryCache({
                     }
                 },
                 label: {
-                    read(_, { readField, cache }) {
+                    read(existing, { variables, readField, toReference, cache }) {
+                        const id = readField('_id');
                         const selfStorage: any = (readField({ fieldName: 'selfStorage' }) as Reference).__ref;
+                        console.log('selfStorage', selfStorage);
                         const name: any = cache.readFragment({
                             id: selfStorage,
                             fragment: gql`
@@ -112,13 +140,31 @@ const cacheVar = new InMemoryCache({
                                 }
                             `
                         });
+                        console.log(`name`, name);
+                        cache.readQuery({
+                            query: gql`
+                        query {
+                            facility(query: { _id: id }) {
+                                _id
+                                selfStorage {
+                                    _id
+                                    name
+                                }
+                                address {
+                                    street
+                                    city
+                                    state
+                                }
+                            }
+                        }`
+                        });
                         const address: any = readField({ fieldName: 'address' });
-                        const result = [
+                        console.log('address', address);
+                        return [
                             name.name,
                             [address.city, address.state].join(', '),
                             address.street.split(' ').slice(1).join(' ')
                         ].join(' - ');
-                        return result;
                     }
                 },
                 value: {

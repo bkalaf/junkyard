@@ -1,4 +1,4 @@
-import { adjustReferenceFields } from '../config/apollo';
+import { adjustReferenceFields } from '../config';
 import { Field } from './Field';
 import { setProp } from './setProp';
 

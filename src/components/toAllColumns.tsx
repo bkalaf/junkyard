@@ -1,7 +1,7 @@
 import { Field } from './Field';
 import { ofKebabOrCamelCaseToTitle } from './ofKebabOrCamelCaseToTitle';
 import { fieldCataMorph } from './fieldCataMorph';
-import { ColDef } from './useGraphQL-old';
+import { ColDef } from "./ColDef";
 
 export function toAllColumns(fields: Field[]) {
     const ifPrimitive = (x: string) => [{ header: ofKebabOrCamelCaseToTitle(x), property: x }];

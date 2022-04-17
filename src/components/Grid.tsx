@@ -7,7 +7,7 @@ import { useCRUD, useDocumentNodes } from "../hooks/useCRUD";
 import { useRequireAuth } from './useRequireAuth';
 import { getProp } from './setProp';
 import { Field } from './Field';
-import { ColDef } from './useGraphQL-old';
+import { ColDef } from "./ColDef";
 
 export function getParentNode(current: HTMLElement | null, tag: string): HTMLElement | null {
     if (current == null) return null;
@@ -22,7 +22,7 @@ export function Grid<T extends { _id: string } & Record<string, any>>() {
     // const { selectAll, headers, allColumns, resultPlural } = useGraphQL();
     const { allColumns, selectAll } = useDocumentNodes();
     const [selected, appendSelected, overwriteSelected, deleteSelected, isSelected] = useSearchParams(true);
-    const { data, loading, error } = useQuery<{ grid: T[] }, undefined>(selectAll as DocumentNode, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-and-network' });
+    const { data, loading, error } = useQuery<{ grid: T[] }, undefined>(selectAll, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-and-network' });
     const onClick = useCallback((ev: React.MouseEvent<HTMLTableRowElement>) => {
         const target = getParentNode(ev.target as HTMLElement, 'TR');
         if (target == null) throw new Error('parent not found');
@@ -76,8 +76,8 @@ export function Grid<T extends { _id: string } & Record<string, any>>() {
                                     onDoubleClick={onDoubleClick}
                                 >
                                     {(allColumns as ColDef[]).map((y, ix2) => {
-                                        console.log(y.property);
-                                        return <td key={ix2}>{getProp(y.property)(x)}</td>;
+                                        console.log('y', y);
+                                        return <td key={ix2}>{y.convertOut ? eval(y.convertOut)(getProp(y.property)(x)) : getProp(y.property)(x)}</td>;
                                     })}
                                 </tr>
                             );

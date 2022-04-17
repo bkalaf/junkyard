@@ -1,4 +1,4 @@
-///<reference path="./../global.d.ts" />
+// ///<reference path="./../global.d.ts" />
 import { kebabToCamelCase } from '../components/kebabToCamelCase';
 import pluralize from '../components/pluralize';
 import { capitalize } from '../components/capitalize';

@@ -3,7 +3,7 @@ import { capitalize } from './capitalize';
 import pluralize from './pluralize';
 import { kebabToCamelCase } from './kebabToCamelCase';
 import { useCollectionName } from '../hooks/useCollectionName';
-import { apollo } from '../config/apollo';
+import { apollo } from '../config';
 import { Field, PrimitiveField, NestedObjectField, ReferenceField, LocalField } from './Field'
 import { ofKebabOrCamelCaseToTitle } from './ofKebabOrCamelCaseToTitle';
 import CRUD from './../config/apollo.json';

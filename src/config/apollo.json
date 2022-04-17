@@ -55,38 +55,15 @@
         "dropdown": "query {\noptions: facilities {\n_id\nselfStorage\n{ _id\nname\n} address {\nstreet\ncity\nstate\n}\nlabel @client\nkey @client\nvalue @client\n}\n}",
         "fields": [
             "_id",
-            [
-                "name"
-            ],
+            ["name"],
             "phone",
             "email",
             "facilityNumber",
-            [
-                "self-storage",
-                "selfStorage",
-                [
-                    "_id",
-                    "name"
-                ]
-            ],
-            [
-                "address",
-                [
-                    "street",
-                    "suite",
-                    "city",
-                    "state",
-                    "country",
-                    "postalCode"
-                ]
-            ]
+            ["self-storage", "selfStorage", ["_id", "name"]],
+            ["address", ["street", "suite", "city", "state", "country", "postalCode"]]
         ],
         "insertOne": "mutation FacilityInsert($data: FacilityInsertInput!) {\n\tinserted: insertOneFacility(data: $data) {\n    _id \n  }  \n}\n",
-        "refetchQueries": [
-            "FacilitiesGridAll",
-            "FacilityGridOne",
-            "FacilityDropdown"
-        ],
+        "refetchQueries": ["FacilitiesGridAll", "FacilityGridOne", "FacilityDropdown"],
         "selectAll": "query FacilitiesGridAll {\n      grid: facilities(sortBy: SELFSTORAGE_ASC) {\n          _id\n          _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n      }\n  }",
         "selectOne": "query FacilityGridOne($query: FacilityQueryInput!) {\n\trecord: facility(query: $query) {\n\t\t_id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
         "updateOne": "mutation FacilityUpdate($id: ObjectId!, $set: FacilityUpdateInput!) {\n  record: updateOneFacility(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}"
@@ -102,6 +79,11 @@
                 "property": "name"
             },
             {
+                "header": "Close Date",
+                "property": "closeDate",
+                "convertOut": "(date) => {\n    const x = new Date(Date.parse(date));\n    return [(x.getMonth() + 1).toFixed(0).padStart(2, '0'), x.getDate().toString().padStart(2, '0'),x.getFullYear().toString()].join('/');\n}"
+            },
+            {
                 "header": "Unit",
                 "property": "unit"
             },
@@ -114,8 +96,8 @@
                 "property": "size.width"
             },
             {
-                "header": "Rental Unit",
-                "property": "rentalUnit.name"
+                "header": "Facility",
+                "property": "facility.name"
             }
         ],
         "allFields": "_id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n",
@@ -123,34 +105,15 @@
         "dropdown": "query RentalUnitDropdown {\n  options: rentalUnits {\n    key @client\n    value @client\n    label @client\n  }\n}",
         "fields": [
             "_id",
-            [
-                "name"
-            ],
+            ["name"],
             "unit",
             "closeDate",
-            [
-                "size",
-                [
-                    "length",
-                    "width"
-                ]
-            ],
-            [
-                "facility",
-                "facility",
-                [
-                    "_id",
-                    "name"
-                ]
-            ]
+            ["size", ["length", "width"]],
+            ["facility", "facility", ["_id", ["name"]]]
         ],
         "insertOne": "mutation RentalUnitInsert($data: RentalUnitInsertInput!) {\n\tinserted: insertOneRentalUnit(data: $data) {\n    _id \n  }  \n}\n",
-        "refetchQueries": [
-            "RentalUnitsGridAll",
-            "RentalUnitGridOne",
-            "RentalUnitDropdown"
-        ],
-        "selectAll": "query RentalUnitsGridAll {\n      grid: rentalUnits(sortBy: UNIT_ASC) {\n          _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nfacility {\n_id\n}\n\n      }\n  }",
+        "refetchQueries": ["RentalUnitsGridAll", "RentalUnitGridOne", "RentalUnitDropdown"],
+        "selectAll": "query RentalUnitsGridAll {\n      grid: rentalUnits(sortBy: UNIT_ASC) {\n          _id\nname @client\nunit\ncloseDate\nsize {\nlength\nwidth\n}\nfacility {\n_id\naddress\n{ street\ncity\nstate\n}\nname @client\nselfStorage\n{ _id\nname\n}\n}\n\n      }\n  }",
         "selectOne": "query RentalUnitGridOne($query: RentalUnitQueryInput!) {\n\trecord: rentalUnit(query: $query) {\n\t\t_id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}",
         "updateOne": "mutation RentalUnitUpdate($id: ObjectId!, $set: RentalUnitUpdateInput!) {\n  record: updateOneRentalUnit(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}"
     },
@@ -172,19 +135,57 @@
         "allFields": "_id\nname\nwebsite\n",
         "deleteMany": "mutation SelfStorageDelete($ids: [ObjectId]) {\n  count: deleteManySelfStorages(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
         "dropdown": "query SelfStorageDropdown {\n  options: selfStorages {\n   _id, name, website, key @client\n    value @client\n    label @client\n  }\n}",
-        "fields": [
-            "_id",
-            "name",
-            "website"
-        ],
+        "fields": ["_id", "name", "website"],
         "insertOne": "mutation SelfStorageInsert($data: SelfStorageInsertInput!) {\n\tinserted: insertOneSelfStorage(data: $data) {\n    _id \n  }  \n}\n",
-        "refetchQueries": [
-            "SelfStoragesGridAll",
-            "SelfStorageGridOne",
-            "SelfStorageDropdown"
-        ],
+        "refetchQueries": ["SelfStoragesGridAll", "SelfStorageGridOne", "SelfStorageDropdown"],
         "selectAll": "query SelfStoragesGridAll {\n      grid: selfStorages(sortBy: NAME_ASC) {\n          _id\n          _id\nname\nwebsite\n\n      }\n  }",
         "selectOne": "query SelfStorageGridOne($query: SelfStorageQueryInput!) {\n\trecord: selfStorage(query: $query) {\n\t\t_id\n    _id\nname\nwebsite\n\n  }\n}",
         "updateOne": "mutation SelfStorageUpdate($id: ObjectId!, $set: SelfStorageUpdateInput!) {\n  record: updateOneSelfStorage(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname\nwebsite\n\n  }\n}"
+    },
+    "entry": {
+        "selectAll": "query EntriesGridAll {\n      grid: entries(sortBy: MATERIALIZEDPATH_ASC) {\n          _id\nisProcessed\nmaterializedPath @client\nparent {\n_id\nmaterializedPath @client\nname {\nbasename\nextension\n}\n}\nname {\nbasename\nextension\n}\nblob {\n_id\nhash\ndata\n}\n\n      }\n  }",
+        "selectOne": "query EntryGridOne($query: EntryQueryInput!) {\n\trecord: entry(query: $query) {\n    _id\nisProcessed\nmaterializedPath @client\nparent {\n_id\nmaterializedPath @client\nname {\nbasename\nextension\n}\n}\nname {\nbasename\nextension\n}\nblob {\n_id\nhash\ndata\n}\n\n  }\n}",
+        "insertOne": "mutation EntryInsert($data: EntryInsertInput!) {\n\tinserted: insertOneEntry(data: $data) {\n        _id\nisProcessed\nmaterializedPath @client\nparent {\n_id\nmaterializedPath @client\nname {\nbasename\nextension\n}\n}\nname {\nbasename\nextension\n}\nblob {\n_id\nhash\ndata\n}\n\n  }  \n}\n",
+        "deleteMany": "mutation EntryDelete($ids: [ObjectId]) {\n  count: deleteManyEntries(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
+        "updateOne": "mutation EntryUpdate($id: ObjectId!, $set: EntryUpdateInput!) {\n  record: updateOneEntry(query: { _id: $id }, set: $set) {\n    _id\n    _id\nisProcessed\nmaterializedPath @client\nparent {\n_id\nmaterializedPath @client\nname {\nbasename\nextension\n}\n}\nname {\nbasename\nextension\n}\nblob {\n_id\nhash\ndata\n}\n\n  }\n}",
+        "dropdown": "query EntryDropdown {\n  options: entries {\n    key\n    value\n    label\n  }\n}",
+        "refetchQueries": ["EntriesGridAll", "EntryGridOne", "EntryDropdown"],
+        "fields": [
+            "_id",
+            "isProcessed",
+            ["materializedPath"],
+            ["entry", "parent", ["_id", ["materializedPath"], ["name", ["basename", "extension"]]]],
+            ["name", ["basename", "extension"]],
+            ["blob", "blob", ["_id", "hash", "data"]]
+        ],
+        "allFields": "_id\nisProcessed\nmaterializedPath @client\nparent {\n_id\nmaterializedPath @client\nname {\nbasename\nextension\n}\n}\nname {\nbasename\nextension\n}\nblob {\n_id\nhash\ndata\n}\n",
+        "allColumns": [
+            { "header": "_id", "property": "_id" },
+            { "header": "Is Processed", "property": "isProcessed" },
+            { "header": "Materialized Path", "property": "materializedPath" },
+            { "header": "Entry", "property": "parent.materializedPath" },
+            { "header": "Basename", "property": "name.basename" },
+            { "header": "Extension", "property": "name.extension" },
+            { "header": "Blob", "property": "blob.data" }
+        ]
+    },
+    "blob": {
+        "selectAll": "query BlobsGridAll {\n      grid: blobs(sortBy: ORIGINAL_ASC) {\n          _id\noriginal\nhash\ndata\nmimetype\nentry {\n_id\nmaterializedPath @client\n}\n\n      }\n  }",
+        "selectOne": "query BlobGridOne($query: BlobQueryInput!) {\n\trecord: blob(query: $query) {\n    _id\noriginal\nhash\ndata\nmimetype\nentry {\n_id\nmaterializedPath @client\n}\n\n  }\n}",
+        "insertOne": "mutation BlobInsert($data: BlobInsertInput!) {\n\tinserted: insertOneBlob(data: $data) {\n        _id\noriginal\nhash\ndata\nmimetype\nentry {\n_id\nmaterializedPath @client\n}\n\n  }  \n}\n",
+        "deleteMany": "mutation BlobDelete($ids: [ObjectId]) {\n  count: deleteManyBlobs(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
+        "updateOne": "mutation BlobUpdate($id: ObjectId!, $set: BlobUpdateInput!) {\n  record: updateOneBlob(query: { _id: $id }, set: $set) {\n    _id\n    _id\noriginal\nhash\ndata\nmimetype\nentry {\n_id\nmaterializedPath @client\n}\n\n  }\n}",
+        "dropdown": "query BlobDropdown {\n  options: blobs {\n    key\n    value\n    label\n  }\n}",
+        "refetchQueries": ["BlobsGridAll", "BlobGridOne", "BlobDropdown"],
+        "fields": ["_id", "original", "hash", "data", "mimetype", ["entry", "entry", ["_id", ["materializedPath"]]]],
+        "allFields": "_id\noriginal\nhash\ndata\nmimetype\nentry {\n_id\nmaterializedPath @client\n}\n",
+        "allColumns": [
+            { "header": "_id", "property": "_id" },
+            { "header": "Original", "property": "original" },
+            { "header": "Hash", "property": "hash" },
+            { "header": "Data", "property": "data" },
+            { "header": "Mimetype", "property": "mimetype" },
+            { "header": "Entry", "property": "entry.materializedPath" }
+        ]
     }
 }
