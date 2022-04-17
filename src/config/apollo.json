@@ -81,15 +81,77 @@
                 ]
             ]
         ],
-        "insertOne": "mutation FacilityInsert($data: FacilityInsertInput!) {\n\tinserted: insertOneFacility(data: $data) {\n        _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }  \n}\n",
+        "insertOne": "mutation FacilityInsert($data: FacilityInsertInput!) {\n\tinserted: insertOneFacility(data: $data) {\n    _id \n  }  \n}\n",
         "refetchQueries": [
             "FacilitiesGridAll",
             "FacilityGridOne",
             "FacilityDropdown"
         ],
-        "selectAll": "query FacilitiesGridAll {\n      grid: facilities(sortBy: SELFSTORAGE_ASC) {\n          _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n      }\n  }",
-        "selectOne": "query FacilityGridOne($query: FacilityQueryInput!) {\n\trecord: facility(query: $query) {\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
+        "selectAll": "query FacilitiesGridAll {\n      grid: facilities(sortBy: SELFSTORAGE_ASC) {\n          _id\n          _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n      }\n  }",
+        "selectOne": "query FacilityGridOne($query: FacilityQueryInput!) {\n\trecord: facility(query: $query) {\n\t\t_id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}",
         "updateOne": "mutation FacilityUpdate($id: ObjectId!, $set: FacilityUpdateInput!) {\n  record: updateOneFacility(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nphone\nemail\nfacilityNumber\nselfStorage {\n_id\nname\n}\naddress {\nstreet\nsuite\ncity\nstate\ncountry\npostalCode\n}\n\n  }\n}"
+    },
+    "rental-unit": {
+        "allColumns": [
+            {
+                "header": "_id",
+                "property": "_id"
+            },
+            {
+                "header": "Name",
+                "property": "name"
+            },
+            {
+                "header": "Unit",
+                "property": "unit"
+            },
+            {
+                "header": "Length",
+                "property": "size.length"
+            },
+            {
+                "header": "Width",
+                "property": "size.width"
+            },
+            {
+                "header": "Rental Unit",
+                "property": "rentalUnit.name"
+            }
+        ],
+        "allFields": "_id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n",
+        "deleteMany": "mutation RentalUnitDelete($ids: [ObjectId]) {\n  count: deleteManyRentalUnits(query: { _id_in: $ids }) {\n    deletedCount\n  }\n}",
+        "dropdown": "query RentalUnitDropdown {\n  options: rentalUnits {\n    key\n    value\n    label\n  }\n}",
+        "fields": [
+            "_id",
+            [
+                "name"
+            ],
+            "unit",
+            [
+                "size",
+                [
+                    "length",
+                    "width"
+                ]
+            ],
+            [
+                "rental-unit",
+                "rentalUnit",
+                [
+                    "_id",
+                    "name"
+                ]
+            ]
+        ],
+        "insertOne": "mutation RentalUnitInsert($data: RentalUnitInsertInput!) {\n\tinserted: insertOneRentalUnit(data: $data) {\n    _id \n  }  \n}\n",
+        "refetchQueries": [
+            "RentalUnitsGridAll",
+            "RentalUnitGridOne",
+            "RentalUnitDropdown"
+        ],
+        "selectAll": "query RentalUnitsGridAll {\n      grid: rentalUnits(sortBy: UNIT_ASC) {\n          _id\n          _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n      }\n  }",
+        "selectOne": "query RentalUnitGridOne($query: RentalUnitQueryInput!) {\n\trecord: rentalUnit(query: $query) {\n\t\t_id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}",
+        "updateOne": "mutation RentalUnitUpdate($id: ObjectId!, $set: RentalUnitUpdateInput!) {\n  record: updateOneRentalUnit(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname @client\nunit\nsize {\nlength\nwidth\n}\nrentalUnit {\n_id\nname\n}\n\n  }\n}"
     },
     "self-storage": {
         "allColumns": [
@@ -114,14 +176,14 @@
             "name",
             "website"
         ],
-        "insertOne": "mutation SelfStorageInsert($data: SelfStorageInsertInput!) {\n\tinserted: insertOneSelfStorage(data: $data) {\n        _id\nname\nwebsite\n\n  }  \n}\n",
+        "insertOne": "mutation SelfStorageInsert($data: SelfStorageInsertInput!) {\n\tinserted: insertOneSelfStorage(data: $data) {\n    _id \n  }  \n}\n",
         "refetchQueries": [
             "SelfStoragesGridAll",
             "SelfStorageGridOne",
             "SelfStorageDropdown"
         ],
-        "selectAll": "query SelfStoragesGridAll {\n      grid: selfStorages(sortBy: NAME_ASC) {\n          _id\nname\nwebsite\n\n      }\n  }",
-        "selectOne": "query SelfStorageGridOne($query: SelfStorageQueryInput!) {\n\trecord: selfStorage(query: $query) {\n    _id\nname\nwebsite\n\n  }\n}",
+        "selectAll": "query SelfStoragesGridAll {\n      grid: selfStorages(sortBy: NAME_ASC) {\n          _id\n          _id\nname\nwebsite\n\n      }\n  }",
+        "selectOne": "query SelfStorageGridOne($query: SelfStorageQueryInput!) {\n\trecord: selfStorage(query: $query) {\n\t\t_id\n    _id\nname\nwebsite\n\n  }\n}",
         "updateOne": "mutation SelfStorageUpdate($id: ObjectId!, $set: SelfStorageUpdateInput!) {\n  record: updateOneSelfStorage(query: { _id: $id }, set: $set) {\n    _id\n    _id\nname\nwebsite\n\n  }\n}"
     }
 }

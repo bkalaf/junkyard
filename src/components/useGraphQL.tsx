@@ -4,12 +4,10 @@ import pluralize from './pluralize';
 import { kebabToCamelCase } from './kebabToCamelCase';
 import { useCollectionName } from '../hooks/useCollectionName';
 import { apollo } from '../config/apollo';
-
-/**
- * @deprecated
- */
-
-export const Field = {
+import { Field, PrimitiveField, NestedObjectField, ReferenceField, LocalField } from './Field'
+import { ofKebabOrCamelCaseToTitle } from './ofKebabOrCamelCaseToTitle';
+import CRUD from './../config/apollo.json';
+export const FieldObj = {
     is: {
         primitive: (x: Field): x is PrimitiveField => typeof x === 'string',
         nestedObj: (x: Field): x is NestedObjectField => Array.isArray(x) && x.length === 2,
@@ -26,9 +24,9 @@ export function fieldCataMorph<T>(
 ) {
     return function (field: Field): T {
         const recurse = fieldCataMorph(isPrimitive, isNestedObj, isLocal, isReference);
-        if (Field.is.primitive(field)) return isPrimitive(field);
-        if (Field.is.nestedObj(field)) return isNestedObj([field[0], field[1].map(recurse)]);
-        if (Field.is.local(field)) return isLocal([recurse(field[0])]);
+        if (FieldObj.is.primitive(field)) return isPrimitive(field);
+        if (FieldObj.is.nestedObj(field)) return isNestedObj([field[0], field[1].map(recurse)]);
+        if (FieldObj.is.local(field)) return isLocal([recurse(field[0])]);
         return isReference([field[0], field[1], field[2].map(recurse)]);
     };
 }

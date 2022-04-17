@@ -1,13 +1,4 @@
-import {
-    ApolloClient,
-    ApolloProvider,
-    gql,
-    HttpLink,
-    InMemoryCache,
-    makeVar,
-    Reference,
-    useReactiveVar
-} from '@apollo/client';
+import { ApolloClient, ApolloProvider, gql, HttpLink, InMemoryCache, Reference, useReactiveVar } from '@apollo/client';
 import { useEffect, useMemo } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { currentUser } from '../state';
@@ -68,9 +59,73 @@ const cacheVar = makeVar(new InMemoryCache({
                             ].join(' - ');
                         }
                     },
-                    label: {
-                        read(_, { readField }) {
-                            return readField('name');
+                    RentalUnit: {
+                        fields: {
+                            label: {
+                                read(_, { readField }) {
+                                    return readField('name');
+                                }
+                            },
+                            value: {
+                                read(_, { readField }) {
+                                    return readField('_id');
+                                }
+                            },
+                            key: {
+                                read(_, { readField }) {
+                                    return readField('_id');
+                                }
+                            },
+                            name: {
+                                read(existing, {  readField, toReference, cache }) {
+                                    const facility = cache.readFragment<{ name: string }>({
+                                        id: (readField('facility') as Reference).__ref,
+                                        fragment: gql`
+                                        fragment FacilitySingle on Facility {
+                                            name
+                                        }`
+                                    })?.name;
+                                    const closeDate = readField({ fieldName: 'closeDate' });
+                                    return [facility, closeDate].join(' - ');
+                                }
+                            }
+                        }
+                    },
+                    Facility: {
+                        fields: {
+                            name: {
+                                read(existing, { variables, readField, toReference }) {
+                                    const selfStorage: any = toReference(readField({ fieldName: 'selfStorage' }) as Reference);
+                                    const address: any = readField({ fieldName: 'address' });
+                                    return [
+                                        selfStorage.name,
+                                        [address.city, address.state].join(', '),
+                                        address.street.split(' ').slice(1).join(' ')
+                                    ].join(' - ');
+                                }
+                            },
+                            label: {
+                                read(_, { readField }) {
+                                    return readField('name');
+                                }
+                            },
+                            value: {
+                                read(_, { readField }) {
+                                    return readField('_id');
+                                }
+                            },
+                            key: {
+                                read(_, { readField }) {
+                                    return readField('_id');
+                                }
+                            },
+                            isSelected: {
+                                read(_, { variables, readField }) {
+                                    const selected: string[] = variables?.selected ?? [];
+                                    const _id = readField({ fieldName: '_id' });
+                                    return selected.includes(_id as string);
+                                }
+                            }
                         }
                     },
                     value: {

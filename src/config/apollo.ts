@@ -2,7 +2,7 @@
 import { kebabToCamelCase } from '../components/kebabToCamelCase';
 import pluralize from '../components/pluralize';
 import { capitalize } from '../components/capitalize';
-// import * as fs from 'graceful-fs';
+import * as fs from 'graceful-fs';
 import { Field, ReferenceField } from '../components/Field';
 import { toAllColumns } from '../components/toAllColumns';
 import { toAllFields } from '../components/toAllFields';
@@ -115,7 +115,10 @@ export const apollo = {
         ['self-storage', 'selfStorage', ['_id', 'name']],
         ['address', ['street', 'suite', 'city', 'state', 'country', 'postalCode']]
     ),
-    'self-storage': apolloEntry('self-storage', 'NAME_ASC', 'name\nwebsite', '_id', 'name', 'website')
+    'self-storage': apolloEntry('self-storage', 'NAME_ASC', 'name\nwebsite', '_id', 'name', 'website'),
+    'rental-unit': apolloEntry(
+        'rental-unit', 'UNIT_ASC', 'name\nunit\nsize {\nlength\nwidth\n}\nfacility{\nname\n}', '_id', ['name'], 'unit', ['size', ['length', 'width']], ['rental-unit', 'rentalUnit', ['_id', 'name']]
+    )
 };
 
 console.log(
@@ -129,4 +132,4 @@ console.log(
     ].join('\n')
 );
 
-// fs.writeFileSync('apollo.json', JSON.stringify(apollo));
+fs.writeFileSync('apollo.json', JSON.stringify(apollo));
