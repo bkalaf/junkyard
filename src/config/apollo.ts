@@ -2,7 +2,7 @@
 import { kebabToCamelCase } from '../components/kebabToCamelCase';
 import pluralize from '../components/pluralize';
 import { capitalize } from '../components/capitalize';
-import * as fs from 'graceful-fs';
+// import * as fs from 'graceful-fs';
 import { Field, ReferenceField } from '../components/Field';
 import { toAllColumns } from '../components/toAllColumns';
 import { toAllFields } from '../components/toAllFields';
@@ -132,4 +132,4 @@ console.log(
     ].join('\n')
 );
 
-fs.writeFileSync('apollo.json', JSON.stringify(apollo));
+// fs.writeFileSync('apollo.json', JSON.stringify(apollo));

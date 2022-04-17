@@ -14,6 +14,7 @@ import { SelfStorageInsertForm } from "./SelfStorageInsertForm";
 import { FacilityInsertForm } from "./FacilityInsertForm";
 import { InsertRecordForm } from "./InsertRecordForm";
 import { useCollectionName } from '../hooks/useCollectionName';
+import { RentalUnitInsertForm } from './RentalUnitInsertForm';
 
 export function ButtonGroup({ children }: { children: Children }) {
     return (
@@ -40,7 +41,9 @@ export function MountInsert() {
             return <SelfStorageInsertForm />
         case 'facility':
             return <FacilityInsertForm />;
-
+        case 'rental-unit':
+            return <RentalUnitInsertForm />
+            
         default:
             return <></>;
     }

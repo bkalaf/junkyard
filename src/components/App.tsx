@@ -1,11 +1,10 @@
-import { ApolloClient, ApolloProvider, gql, HttpLink, InMemoryCache, Reference, useReactiveVar } from '@apollo/client';
+import { ApolloClient, ApolloProvider, gql, HttpLink, InMemoryCache, makeVar, Reference, useReactiveVar } from '@apollo/client';
 import { useEffect, useMemo } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { currentUser } from '../state';
 import { MainWindow } from './MainWindow';
 import './../assets/css/app.css';
 import { useAuth } from '../hooks/useAuth';
-import { appendFile } from 'fs';
 
 const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/jitt-mntcv/graphql`;
 
@@ -34,32 +33,7 @@ const cacheVar = makeVar(new InMemoryCache({
                     }
                 }
             },
-            Facility: {
-                fields: {
-                    name: {
-                        read(existing, { variables, readField, toReference, cache }) {
-                            const selfStorage: any = readField({ fieldName: 'selfStorage' });
-                            console.log(`selfStorage`, selfStorage);
-                            console.log(`toRef`, toReference(selfStorage));
-                            console.log(`cache`, cache.readFragment({ id: selfStorage.ref, fragment: gql`
-                            fragment SelfStorageSingle on SelfStorage {
-                                _id
-                                name
-                            }`}));
-                            const selfStorageObj: any = cache.readFragment({ id: selfStorage.__ref, fragment: gql`
-                            fragment SelfStorageSingle on SelfStorage {
-                                _id
-                                name
-                            }`});
-                            const address: any = readField({ fieldName: 'address' });
-                            return [
-                                selfStorageObj.name,
-                                [address.city, address.state].join(', '),
-                                address.street.split(' ').slice(1).join(' ')
-                            ].join(' - ');
-                        }
-                    },
-                    RentalUnit: {
+            RentalUnit: {
                         fields: {
                             label: {
                                 read(_, { readField }) {
@@ -91,14 +65,20 @@ const cacheVar = makeVar(new InMemoryCache({
                             }
                         }
                     },
-                    Facility: {
+                   
+        
+             Facility: {
                         fields: {
                             name: {
-                                read(existing, { variables, readField, toReference }) {
-                                    const selfStorage: any = toReference(readField({ fieldName: 'selfStorage' }) as Reference);
+                                read(existing, { variables, readField, toReference, cache }) {
+                                    const selfStorage: any = (readField({ fieldName: 'selfStorage' }) as Reference).__ref;
+                                    const name: any = cache.readFragment({ id: selfStorage, fragment: gql`
+                                    fragment SelfStorageSingle on SelfStorage {
+                                        name
+                                    }` });
                                     const address: any = readField({ fieldName: 'address' });
                                     return [
-                                        selfStorage.name,
+                                        name.name,
                                         [address.city, address.state].join(', '),
                                         address.street.split(' ').slice(1).join(' ')
                                     ].join(' - ');
@@ -119,34 +99,9 @@ const cacheVar = makeVar(new InMemoryCache({
                                     return readField('_id');
                                 }
                             },
-                            isSelected: {
-                                read(_, { variables, readField }) {
-                                    const selected: string[] = variables?.selected ?? [];
-                                    const _id = readField({ fieldName: '_id' });
-                                    return selected.includes(_id as string);
-                                }
-                            }
+                            
                         }
                     },
-                    value: {
-                        read(_, { readField }) {
-                            return readField('_id');
-                        }
-                    },
-                    key: {
-                        read(_, { readField }) {
-                            return readField('_id');
-                        }
-                    },
-                    isSelected: {
-                        read(_, { variables, readField }) {
-                            const selected: string[] = variables?.selected ?? [];
-                            const _id = readField({ fieldName: '_id' });
-                            return selected.includes(_id as string);
-                        }
-                    }
-                }
-            }
         }
     }));
 const client = new ApolloClient({
